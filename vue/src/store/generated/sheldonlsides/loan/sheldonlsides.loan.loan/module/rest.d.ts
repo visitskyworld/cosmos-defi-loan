@@ -9,6 +9,7 @@ export interface LoanLoan {
     borrower?: string;
     lender?: string;
 }
+export declare type LoanMsgApproveLoanResponse = object;
 export declare type LoanMsgRequestLoanResponse = object;
 /**
  * Params defines the parameters for the module.

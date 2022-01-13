@@ -20172,6 +20172,8 @@ definitions:
         type: string
       lender:
         type: string
+  sheldonlsides.loan.loan.MsgApproveLoanResponse:
+    type: object
   sheldonlsides.loan.loan.MsgRequestLoanResponse:
     type: object
   sheldonlsides.loan.loan.Params:

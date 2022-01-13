@@ -9,6 +9,12 @@ export interface MsgRequestLoan {
 }
 export interface MsgRequestLoanResponse {
 }
+export interface MsgApproveLoan {
+    creator: string;
+    id: number;
+}
+export interface MsgApproveLoanResponse {
+}
 export declare const MsgRequestLoan: {
     encode(message: MsgRequestLoan, writer?: Writer): Writer;
     decode(input: Reader | Uint8Array, length?: number): MsgRequestLoan;
@@ -23,15 +29,31 @@ export declare const MsgRequestLoanResponse: {
     toJSON(_: MsgRequestLoanResponse): unknown;
     fromPartial(_: DeepPartial<MsgRequestLoanResponse>): MsgRequestLoanResponse;
 };
+export declare const MsgApproveLoan: {
+    encode(message: MsgApproveLoan, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): MsgApproveLoan;
+    fromJSON(object: any): MsgApproveLoan;
+    toJSON(message: MsgApproveLoan): unknown;
+    fromPartial(object: DeepPartial<MsgApproveLoan>): MsgApproveLoan;
+};
+export declare const MsgApproveLoanResponse: {
+    encode(_: MsgApproveLoanResponse, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): MsgApproveLoanResponse;
+    fromJSON(_: any): MsgApproveLoanResponse;
+    toJSON(_: MsgApproveLoanResponse): unknown;
+    fromPartial(_: DeepPartial<MsgApproveLoanResponse>): MsgApproveLoanResponse;
+};
 /** Msg defines the Msg service. */
 export interface Msg {
-    /** this line is used by starport scaffolding # proto/tx/rpc */
     RequestLoan(request: MsgRequestLoan): Promise<MsgRequestLoanResponse>;
+    /** this line is used by starport scaffolding # proto/tx/rpc */
+    ApproveLoan(request: MsgApproveLoan): Promise<MsgApproveLoanResponse>;
 }
 export declare class MsgClientImpl implements Msg {
     private readonly rpc;
     constructor(rpc: Rpc);
     RequestLoan(request: MsgRequestLoan): Promise<MsgRequestLoanResponse>;
+    ApproveLoan(request: MsgApproveLoan): Promise<MsgApproveLoanResponse>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;

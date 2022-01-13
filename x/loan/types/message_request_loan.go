@@ -43,7 +43,7 @@ func (msg *MsgRequestLoan) GetSignBytes() []byte {
 func (msg *MsgRequestLoan) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 
-	amount, err  := sdk.ParseCoinsNormalized(msg.Amount)
+	amount, err := sdk.ParseCoinsNormalized(msg.Amount)
 	fee, _ := sdk.ParseCoinsNormalized(msg.Fee)
 	collateral, _ := sdk.ParseCoinsNormalized(msg.Collateral)
 

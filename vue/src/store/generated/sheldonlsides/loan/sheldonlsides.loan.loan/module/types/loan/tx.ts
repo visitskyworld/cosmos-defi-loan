@@ -1,5 +1,6 @@
 /* eslint-disable */
-import { Reader, Writer } from "protobufjs/minimal";
+import { Reader, util, configure, Writer } from "protobufjs/minimal";
+import * as Long from "long";
 
 export const protobufPackage = "sheldonlsides.loan.loan";
 
@@ -12,6 +13,13 @@ export interface MsgRequestLoan {
 }
 
 export interface MsgRequestLoanResponse {}
+
+export interface MsgApproveLoan {
+  creator: string;
+  id: number;
+}
+
+export interface MsgApproveLoanResponse {}
 
 const baseMsgRequestLoan: object = {
   creator: "",
@@ -180,10 +188,121 @@ export const MsgRequestLoanResponse = {
   },
 };
 
+const baseMsgApproveLoan: object = { creator: "", id: 0 };
+
+export const MsgApproveLoan = {
+  encode(message: MsgApproveLoan, writer: Writer = Writer.create()): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.id !== 0) {
+      writer.uint32(16).uint64(message.id);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgApproveLoan {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgApproveLoan } as MsgApproveLoan;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.id = longToNumber(reader.uint64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgApproveLoan {
+    const message = { ...baseMsgApproveLoan } as MsgApproveLoan;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.id !== undefined && object.id !== null) {
+      message.id = Number(object.id);
+    } else {
+      message.id = 0;
+    }
+    return message;
+  },
+
+  toJSON(message: MsgApproveLoan): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.id !== undefined && (obj.id = message.id);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<MsgApproveLoan>): MsgApproveLoan {
+    const message = { ...baseMsgApproveLoan } as MsgApproveLoan;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.id !== undefined && object.id !== null) {
+      message.id = object.id;
+    } else {
+      message.id = 0;
+    }
+    return message;
+  },
+};
+
+const baseMsgApproveLoanResponse: object = {};
+
+export const MsgApproveLoanResponse = {
+  encode(_: MsgApproveLoanResponse, writer: Writer = Writer.create()): Writer {
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgApproveLoanResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgApproveLoanResponse } as MsgApproveLoanResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgApproveLoanResponse {
+    const message = { ...baseMsgApproveLoanResponse } as MsgApproveLoanResponse;
+    return message;
+  },
+
+  toJSON(_: MsgApproveLoanResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(_: DeepPartial<MsgApproveLoanResponse>): MsgApproveLoanResponse {
+    const message = { ...baseMsgApproveLoanResponse } as MsgApproveLoanResponse;
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   RequestLoan(request: MsgRequestLoan): Promise<MsgRequestLoanResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  ApproveLoan(request: MsgApproveLoan): Promise<MsgApproveLoanResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -202,6 +321,18 @@ export class MsgClientImpl implements Msg {
       MsgRequestLoanResponse.decode(new Reader(data))
     );
   }
+
+  ApproveLoan(request: MsgApproveLoan): Promise<MsgApproveLoanResponse> {
+    const data = MsgApproveLoan.encode(request).finish();
+    const promise = this.rpc.request(
+      "sheldonlsides.loan.loan.Msg",
+      "ApproveLoan",
+      data
+    );
+    return promise.then((data) =>
+      MsgApproveLoanResponse.decode(new Reader(data))
+    );
+  }
 }
 
 interface Rpc {
@@ -211,6 +342,16 @@ interface Rpc {
     data: Uint8Array
   ): Promise<Uint8Array>;
 }
+
+declare var self: any | undefined;
+declare var window: any | undefined;
+var globalThis: any = (() => {
+  if (typeof globalThis !== "undefined") return globalThis;
+  if (typeof self !== "undefined") return self;
+  if (typeof window !== "undefined") return window;
+  if (typeof global !== "undefined") return global;
+  throw "Unable to locate global object";
+})();
 
 type Builtin = Date | Function | Uint8Array | string | number | undefined;
 export type DeepPartial<T> = T extends Builtin
@@ -222,3 +363,15 @@ export type DeepPartial<T> = T extends Builtin
   : T extends {}
   ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
+
+function longToNumber(long: Long): number {
+  if (long.gt(Number.MAX_SAFE_INTEGER)) {
+    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+  }
+  return long.toNumber();
+}
+
+if (util.Long !== Long) {
+  util.Long = Long as any;
+  configure();
+}

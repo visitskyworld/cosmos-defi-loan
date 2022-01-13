@@ -12,16 +12,15 @@ func (k msgServer) RequestLoan(goCtx context.Context, msg *types.MsgRequestLoan)
 
 	//create a new loan with the following user input
 	var loan = types.Loan{
-		Amount: msg.Amount,
-		Fee: msg.Fee,
+		Amount:     msg.Amount,
+		Fee:        msg.Fee,
 		Collateral: msg.Collateral,
-		Deadline: msg.Deadline,
-		State: "requested",
-		Borrower: msg.Creator,
+		Deadline:   msg.Deadline,
+		State:      "requested",
+		Borrower:   msg.Creator,
 	}
 
 	//checks to see if collateral is more than the loan amount + fee
-	
 
 	//get the borrower address
 	borrower, _ := sdk.AccAddressFromBech32(msg.Creator)
