@@ -1,10 +1,6 @@
 package types
 
 import (
-	"context"
-	"fmt"
-
-	"github.com/cosmonaut/loan/x/loan/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )

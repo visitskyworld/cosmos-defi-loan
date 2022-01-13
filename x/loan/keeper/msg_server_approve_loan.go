@@ -3,7 +3,6 @@ package keeper
 import (
 	"context"
 
-	"github.com/cosmonaut/loan/x/loan/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/sheldonlsides/loan/x/loan/types"
