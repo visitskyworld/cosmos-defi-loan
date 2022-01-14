@@ -15,6 +15,12 @@ export interface MsgApproveLoan {
 }
 export interface MsgApproveLoanResponse {
 }
+export interface MsgRepayLoan {
+    creator: string;
+    id: number;
+}
+export interface MsgRepayLoanResponse {
+}
 export declare const MsgRequestLoan: {
     encode(message: MsgRequestLoan, writer?: Writer): Writer;
     decode(input: Reader | Uint8Array, length?: number): MsgRequestLoan;
@@ -43,17 +49,33 @@ export declare const MsgApproveLoanResponse: {
     toJSON(_: MsgApproveLoanResponse): unknown;
     fromPartial(_: DeepPartial<MsgApproveLoanResponse>): MsgApproveLoanResponse;
 };
+export declare const MsgRepayLoan: {
+    encode(message: MsgRepayLoan, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): MsgRepayLoan;
+    fromJSON(object: any): MsgRepayLoan;
+    toJSON(message: MsgRepayLoan): unknown;
+    fromPartial(object: DeepPartial<MsgRepayLoan>): MsgRepayLoan;
+};
+export declare const MsgRepayLoanResponse: {
+    encode(_: MsgRepayLoanResponse, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): MsgRepayLoanResponse;
+    fromJSON(_: any): MsgRepayLoanResponse;
+    toJSON(_: MsgRepayLoanResponse): unknown;
+    fromPartial(_: DeepPartial<MsgRepayLoanResponse>): MsgRepayLoanResponse;
+};
 /** Msg defines the Msg service. */
 export interface Msg {
     RequestLoan(request: MsgRequestLoan): Promise<MsgRequestLoanResponse>;
-    /** this line is used by starport scaffolding # proto/tx/rpc */
     ApproveLoan(request: MsgApproveLoan): Promise<MsgApproveLoanResponse>;
+    /** this line is used by starport scaffolding # proto/tx/rpc */
+    RepayLoan(request: MsgRepayLoan): Promise<MsgRepayLoanResponse>;
 }
 export declare class MsgClientImpl implements Msg {
     private readonly rpc;
     constructor(rpc: Rpc);
     RequestLoan(request: MsgRequestLoan): Promise<MsgRequestLoanResponse>;
     ApproveLoan(request: MsgApproveLoan): Promise<MsgApproveLoanResponse>;
+    RepayLoan(request: MsgRepayLoan): Promise<MsgRepayLoanResponse>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;
