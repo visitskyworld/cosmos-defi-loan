@@ -23,7 +23,7 @@ func (k msgServer) LiquidateLoan(goCtx context.Context, msg *types.MsgLiquidateL
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Cannot liquidate: not the lender")
 	}
 
-	if loan.State != "approved" {
+	if loan.State != "approved" || loan.State == "liquidated" {
 		return nil, sdkerrors.Wrapf(types.ErrWrongLoanState, "%v", loan.State)
 	}
 
@@ -41,7 +41,7 @@ func (k msgServer) LiquidateLoan(goCtx context.Context, msg *types.MsgLiquidateL
 
 	k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, lender, collateral)
 
-	loan.State = "liquadated"
+	loan.State = "liquidated"
 	k.SetLoan(ctx, loan)
 
 	return &types.MsgLiquidateLoanResponse{}, nil

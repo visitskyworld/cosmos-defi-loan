@@ -7,35 +7,32 @@ import (
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/sheldonlsides/loan/x/loan/types"
+	"github.com/spf13/cast"
 	"github.com/spf13/cobra"
 )
 
 var _ = strconv.Itoa(0)
 
-func CmdRequestLoan() *cobra.Command {
+func CmdCancelLoan() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "request-loan [amount] [fee] [collateral] [deadline]",
-		Short: "Broadcast message request-loan",
-		Args:  cobra.ExactArgs(4),
+		Use:   "cancel-loan [id]",
+		Short: "Broadcast message cancel-loan",
+		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argAmount := args[0]
-			argFee := args[1]
-			argCollateral := args[2]
-			argDeadline := args[3]
+			argId, err := cast.ToUint64E(args[0])
+			if err != nil {
+				return err
+			}
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
 			}
 
-			msg := types.NewMsgRequestLoan(
+			msg := types.NewMsgCancelLoan(
 				clientCtx.GetFromAddress().String(),
-				argAmount,
-				argFee,
-				argCollateral,
-				argDeadline,
+				argId,
 			)
-			
 			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}

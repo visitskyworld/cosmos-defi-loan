@@ -2,8 +2,10 @@ package keeper
 
 import (
 	"context"
+	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/sheldonlsides/loan/x/loan/types"
 )
 
@@ -21,6 +23,12 @@ func (k msgServer) RequestLoan(goCtx context.Context, msg *types.MsgRequestLoan)
 	}
 
 	//checks to see if collateral is more than the loan amount + fee
+	total := loan.Amount + " + " + loan.Fee
+
+	if loan.Collateral < total {
+		return nil, sdkerrors.Wrap(types.ErrInsufficientCollateral, 
+			fmt.Sprintf("Collateral %s must be greater than the Amount+Fee - %s", loan.Collateral, total))
+	}
 
 	//get the borrower address
 	borrower, _ := sdk.AccAddressFromBech32(msg.Creator)

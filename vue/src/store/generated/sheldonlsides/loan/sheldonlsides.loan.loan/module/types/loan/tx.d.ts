@@ -27,6 +27,12 @@ export interface MsgLiquidateLoan {
 }
 export interface MsgLiquidateLoanResponse {
 }
+export interface MsgCancelLoan {
+    creator: string;
+    id: number;
+}
+export interface MsgCancelLoanResponse {
+}
 export declare const MsgRequestLoan: {
     encode(message: MsgRequestLoan, writer?: Writer): Writer;
     decode(input: Reader | Uint8Array, length?: number): MsgRequestLoan;
@@ -83,13 +89,28 @@ export declare const MsgLiquidateLoanResponse: {
     toJSON(_: MsgLiquidateLoanResponse): unknown;
     fromPartial(_: DeepPartial<MsgLiquidateLoanResponse>): MsgLiquidateLoanResponse;
 };
+export declare const MsgCancelLoan: {
+    encode(message: MsgCancelLoan, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): MsgCancelLoan;
+    fromJSON(object: any): MsgCancelLoan;
+    toJSON(message: MsgCancelLoan): unknown;
+    fromPartial(object: DeepPartial<MsgCancelLoan>): MsgCancelLoan;
+};
+export declare const MsgCancelLoanResponse: {
+    encode(_: MsgCancelLoanResponse, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): MsgCancelLoanResponse;
+    fromJSON(_: any): MsgCancelLoanResponse;
+    toJSON(_: MsgCancelLoanResponse): unknown;
+    fromPartial(_: DeepPartial<MsgCancelLoanResponse>): MsgCancelLoanResponse;
+};
 /** Msg defines the Msg service. */
 export interface Msg {
     RequestLoan(request: MsgRequestLoan): Promise<MsgRequestLoanResponse>;
     ApproveLoan(request: MsgApproveLoan): Promise<MsgApproveLoanResponse>;
     RepayLoan(request: MsgRepayLoan): Promise<MsgRepayLoanResponse>;
-    /** this line is used by starport scaffolding # proto/tx/rpc */
     LiquidateLoan(request: MsgLiquidateLoan): Promise<MsgLiquidateLoanResponse>;
+    /** this line is used by starport scaffolding # proto/tx/rpc */
+    CancelLoan(request: MsgCancelLoan): Promise<MsgCancelLoanResponse>;
 }
 export declare class MsgClientImpl implements Msg {
     private readonly rpc;
@@ -98,6 +119,7 @@ export declare class MsgClientImpl implements Msg {
     ApproveLoan(request: MsgApproveLoan): Promise<MsgApproveLoanResponse>;
     RepayLoan(request: MsgRepayLoan): Promise<MsgRepayLoanResponse>;
     LiquidateLoan(request: MsgLiquidateLoan): Promise<MsgLiquidateLoanResponse>;
+    CancelLoan(request: MsgCancelLoan): Promise<MsgCancelLoanResponse>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;

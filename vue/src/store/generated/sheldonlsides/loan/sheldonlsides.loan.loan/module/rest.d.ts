@@ -10,6 +10,7 @@ export interface LoanLoan {
     lender?: string;
 }
 export declare type LoanMsgApproveLoanResponse = object;
+export declare type LoanMsgCancelLoanResponse = object;
 export declare type LoanMsgLiquidateLoanResponse = object;
 export declare type LoanMsgRepayLoanResponse = object;
 export declare type LoanMsgRequestLoanResponse = object;
