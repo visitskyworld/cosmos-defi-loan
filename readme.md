@@ -2,6 +2,8 @@
 
 **DeFi loan** is a peer to peer loan blockchain built using Cosmos SDK and Tendermint and created with [Starport](https://starport.com). The blockchain allows you to create loan request. With the loan request you must submit the loan amount, fee you are willing to pay for the loan, and the amount of collateral that will back the loan. Once the loan request is created anyone can choose to approve your loan and lend you tokens if they agree to your collateral and fee terms. If you don't pay the loan back in a certain time it can be liqudated by the user that lent you the tokens. If the loan is liquidated all collateral is sent to the user\address that lent you the tokens. You can also cancel a loan request before it has been approved. This is simply a proof-of-concept.
 
+# Readme file in development
+
 ## Get started
 
 ```
