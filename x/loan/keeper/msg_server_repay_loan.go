@@ -33,23 +33,26 @@ func (k msgServer) RepayLoan(goCtx context.Context, msg *types.MsgRepayLoan) (*t
 	fee, _ := sdk.ParseCoinsNormalized(loan.Fee)
 	collateral, _ := sdk.ParseCoinsNormalized(loan.Collateral)
 
+	//sends amount borrowed back to lender
 	var err = k.bankKeeper.SendCoins(ctx, borrower, lender, amount)
 	if err != nil {
 		return nil, sdkerrors.Wrap(types.ErrWrongLoanState, "Cannot send coins")
 	}
 
+	//sends fee to lender
 	err = k.bankKeeper.SendCoins(ctx, borrower, lender, fee)
 	if err != nil {
 		return nil, sdkerrors.Wrap(types.ErrWrongLoanState, "Cannot send coins")
 	}
 
+	//sends collateral back to borrower
 	err = k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, borrower, collateral)
 	if err != nil {
 		return nil, sdkerrors.Wrap(types.ErrWrongLoanState, "Cannot send coins")
 	}
 
+	//updates loan state to repayed
 	loan.State = "repayed"
-
 	k.SetLoan(ctx, loan)
 
 	return &types.MsgRepayLoanResponse{}, nil
