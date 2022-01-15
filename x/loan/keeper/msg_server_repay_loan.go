@@ -18,7 +18,7 @@ func (k msgServer) RepayLoan(goCtx context.Context, msg *types.MsgRepayLoan) (*t
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrKeyNotFound, fmt.Sprintf("key %d doesn't exist", msg.Id))
 	}
 
-	if  loan.State != "approved" {
+	if loan.State != "approved" {
 		return nil, sdkerrors.Wrapf(types.ErrWrongLoanState, "%v", loan.State)
 	}
 
@@ -42,7 +42,7 @@ func (k msgServer) RepayLoan(goCtx context.Context, msg *types.MsgRepayLoan) (*t
 	if err != nil {
 		return nil, sdkerrors.Wrap(types.ErrWrongLoanState, "Cannot send coins")
 	}
-	
+
 	err = k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, borrower, collateral)
 	if err != nil {
 		return nil, sdkerrors.Wrap(types.ErrWrongLoanState, "Cannot send coins")

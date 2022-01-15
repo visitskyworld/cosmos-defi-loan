@@ -20174,6 +20174,8 @@ definitions:
         type: string
   sheldonlsides.loan.loan.MsgApproveLoanResponse:
     type: object
+  sheldonlsides.loan.loan.MsgLiquidateLoanResponse:
+    type: object
   sheldonlsides.loan.loan.MsgRepayLoanResponse:
     type: object
   sheldonlsides.loan.loan.MsgRequestLoanResponse:
